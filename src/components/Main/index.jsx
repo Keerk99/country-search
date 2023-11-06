@@ -85,6 +85,12 @@ export default function Main() {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <MainContainer>
       <Section>
@@ -97,6 +103,7 @@ export default function Main() {
                 placeholder="Search for a country..."
                 value={searchKey}
                 onChange={handleSearch}
+                onKeyDown={handleKeyPress}
                 id="countryName"
               />
             </Search>

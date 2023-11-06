@@ -98,7 +98,10 @@ export const Ul = styled.ul`
   }
   @media screen and (max-width: 423px) {
     grid-template-columns: repeat(1, 1fr);
-    padding: 0 2.5rem;
+    padding: 0 3.5rem;
     gap: 2rem;
+  }
+  @media screen and (max-width: 319px) {
+    padding: 0 2.5rem;
   }
 `;
