@@ -5,7 +5,8 @@ const LightTheme = {
     cardBackground: "#FFFFFF",
     shadow: "0px 0px 6px 2px rgba(180, 172, 172, 0.2)",
     placeholder: "rgb(180, 172, 172)",
-    search: "hsl(0, 0%, 52%)"
+    search: "hsl(0, 0%, 52%)",
+    hover: "#445768",
 };
 
 const DarkTheme = {
@@ -15,7 +16,8 @@ const DarkTheme = {
     cardBackground: "hsl(209, 23%, 22%)",
     shadow: "0px 0px 6px 2px rgba(0, 0, 0, 0.2)",
     placeholder: "rgba(255, 255, 255, 0.9)",
-    search: "#FFFFFF"
+    search: "#FFFFFF",
+    hover: "#68a3dd",
 };
 
 const Themes = {

@@ -35,8 +35,8 @@ export const H1 = styled.h1`
   @media screen and (max-width: 639px) {
     font-size: 1.1rem;
   }
-  @media screen and (max-width: 423px) {
-    font-size: .9rem;
+  @media screen and (max-width: 424px) {
+    font-size: 0.9rem;
   }
 `;
 
@@ -48,14 +48,18 @@ export const BtnMode = styled.button`
   align-items: center;
   color: ${({ theme }) => theme.text};
   font-size: 1rem;
-  gap: .5rem;
+  gap: 0.5rem;
   font-family: "Nunito Sans", sans-serif;
   font-weight: 600;
-  @media screen and (max-width: 639px) {
-    font-size: .9rem;
+  transition: color ease 0.5s;
+  &&:hover {
+    color: ${({ theme }) => theme.hover};
   }
-  @media screen and (max-width: 423px) {
-    font-size: .6rem;
-    gap: .3rem;
+  @media screen and (max-width: 639px) {
+    font-size: 0.9rem;
+  }
+  @media screen and (max-width: 424px) {
+    font-size: 0.6rem;
+    gap: 0.3rem;
   }
 `;

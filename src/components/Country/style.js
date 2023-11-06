@@ -29,6 +29,10 @@ export const BtnBack = styled(Link)`
   font-size: 1rem;
   font-weight: 300;
   text-align: center;
+  transition: color ease .5s;
+  &&:hover {
+    color: ${({ theme }) => theme.hover};
+  }
   @media screen and (max-width: 767px) {
     font-size: 0.9rem;
   }
@@ -158,7 +162,7 @@ export const BtnContiner = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  @media screen and (max-width: 423px) {
+  @media screen and (max-width: 424px) {
     justify-content: center;
   }
 `;
@@ -171,6 +175,10 @@ export const BtnCountry = styled(Link)`
   padding: 0.5rem 1.3rem;
   border-radius: 0.4rem;
   text-align: center;
+  transition: color ease .5s;
+  &&:hover {
+    color: ${({ theme }) => theme.hover};
+  }
   @media screen and (max-width: 1279px) {
     font-size: 0.9rem;
   }

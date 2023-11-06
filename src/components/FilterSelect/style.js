@@ -11,7 +11,7 @@ export const Container = styled.div`
   @media screen and (max-width: 639px) {
     width: 200px;
   }
-  @media screen and (max-width: 423px) {
+  @media screen and (max-width: 424px) {
     font-size: 0.8rem;
   }
 `;

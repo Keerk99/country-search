@@ -14,9 +14,9 @@ function App() {
   const [theme, setTheme] = useState(initialTheme);
 
   useEffect(() => {
-    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    prefersDarkMode && localStorage.setItem('theme', theme);
+    localStorage.setItem('theme', theme);
   }, [theme]);
+
   return (
     <Router>
       <ThemeProvider theme={Themes[theme]}>

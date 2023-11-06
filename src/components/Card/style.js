@@ -16,6 +16,10 @@ export const Li = styled.li`
   padding: 0 0 2rem 0;
   cursor: pointer;
   box-shadow: ${({ theme }) => theme.shadow};
+  transition: transform ease .5s;
+  &&:hover{
+    transform: scale(1.01);
+  }
   @media screen and (max-width: 1023px) {
     padding: 0 0 1rem 0;
   }

@@ -7,10 +7,12 @@ import {
   Search,
   Input,
   Ul,
+  BtnClear,
 } from "./style";
 import Card from "../Card";
 import FilterByRegion from "../FilterSelect";
 import { SkeletonCard } from "../Skeleton";
+import NotFound from "../NotFound";
 
 export default function Main() {
   const urlAPI = "https://restcountries.com/v3.1/";
@@ -70,6 +72,8 @@ export default function Main() {
     if (regionValue === "All") {
       fetchCountries();
       handleLoading(500);
+      setSearchKey("");
+      setShowNoResult(false);
     } else {
       try {
         const response = await fetch(`${urlAPI}region/${regionValue}`);
@@ -79,6 +83,8 @@ export default function Main() {
         const data = await response.json();
         setCountries(data);
         handleLoading(500);
+        setSearchKey("");
+        setShowNoResult(false);
       } catch (error) {
         console.error(error);
       }
@@ -89,6 +95,14 @@ export default function Main() {
     if (e.key === "Enter") {
       e.preventDefault();
     }
+  };
+
+  const handleClear = () => {
+    setSearchKey("");
+    setSelectedRegion("All");
+    setShowNoResult(false);
+    handleLoading(500);
+    fetchCountries();
   };
 
   return (
@@ -113,17 +127,24 @@ export default function Main() {
             handleRegionChange={handleRegionChange}
           />
         </ContainerSearchFilter>
-        <Ul>
-          {loading ? (
-            countries.map((_, index) => <SkeletonCard key={index} />)
-          ) : showNoResult ? (
-            <div>No hay resultado</div>
-          ) : (
-            countries.map((country, index) => (
+        {loading ? (
+          <Ul>
+            {countries.map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </Ul>
+        ) : showNoResult ? (
+          <>
+            <NotFound searchKey={searchKey} />
+          </>
+        ) : (
+          <Ul>
+            {countries.map((country, index) => (
               <Card country={country} key={index} />
-            ))
-          )}
-        </Ul>
+            ))}
+          </Ul>
+        )}
+        {searchKey && <BtnClear onClick={handleClear}>Clear</BtnClear>}
       </Section>
     </MainContainer>
   );

@@ -25,7 +25,6 @@ export const ContainerSearchFilter = styled.div`
   justify-content: space-between;
   @media screen and (max-width: 639px) {
     flex-direction: column;
-    justify-content: baseline;
     gap: 3rem;
   }
 `;
@@ -63,7 +62,7 @@ export const Input = styled.input`
   &&::placeholder {
     color: ${({ theme }) => theme.placeholder};
   }
-  @media screen and (max-width: 423px) {
+  @media screen and (max-width: 424px) {
     font-size: 0.8rem;
   }
 `;
@@ -96,12 +95,32 @@ export const Ul = styled.ul`
   @media screen and (max-width: 639px) {
     gap: 1rem;
   }
-  @media screen and (max-width: 423px) {
+  @media screen and (max-width: 424px) {
     grid-template-columns: repeat(1, 1fr);
     padding: 0 3.5rem;
     gap: 2rem;
   }
   @media screen and (max-width: 319px) {
-    padding: 0 2.5rem;
+    padding: 0 2rem;
+  }
+`;
+
+export const BtnClear = styled.button`
+  padding: 1rem 2.5rem;
+  border-radius: 0.4rem;
+  border: none;
+  background: ${({ theme }) => theme.background};
+  box-shadow: ${({ theme }) => theme.shadow};
+  color: ${({ theme }) => theme.text};
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: color ease 0.5s;
+  align-self: center;
+  &&:hover {
+    color: ${({ theme }) => theme.hover};
+  }
+  @media screen and (max-width: 424px) {
+    font-size: 0.8rem;
   }
 `;
