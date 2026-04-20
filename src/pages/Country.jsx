@@ -28,13 +28,13 @@ export default function Country() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const urlAPI = "https://restcountries.com/v3.1/";
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     const fetchCountry = async (countryName) => {
       try {
         const response = await fetch(
-          `${urlAPI}name/${countryName}?fullText=true`
+          `${apiUrl}name/${countryName}?fullText=true`,
         );
         if (!response.ok) {
           navigate("*");
@@ -63,16 +63,16 @@ export default function Country() {
     if (borderCodes && borderCodes.length > 0) {
       try {
         const response = await fetch(
-          `${urlAPI}alpha?codes=${borderCodes.join(",")}`
+          `${apiUrl}alpha?codes=${borderCodes.join(",")}`,
         );
         if (!response.ok) {
           throw new Error(
-            `Error at getting border countries data: ${response.status}`
+            `Error at getting border countries data: ${response.status}`,
           );
         }
         const data = await response.json();
         const borderNames = data.map(
-          (borderCountry) => borderCountry.name.common
+          (borderCountry) => borderCountry.name.common,
         );
         setBorderNames(borderNames);
       } catch (error) {

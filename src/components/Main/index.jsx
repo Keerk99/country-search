@@ -15,7 +15,7 @@ import { SkeletonCard } from "../Skeleton";
 import NotFound from "../NotFound";
 
 export default function Main() {
-  const urlAPI = "https://restcountries.com/v3.1/";
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const [allCountries, setAllCountries] = useState([]);
   const [countries, setCountries] = useState([]);
@@ -33,10 +33,13 @@ export default function Main() {
 
   const fetchCountries = async () => {
     try {
-      const response = await fetch(`${urlAPI}all`);
+      const response = await fetch(
+        `${apiUrl}all?fields=name,flags,population,region,capital`,
+      );
       if (!response.ok) {
         throw new Error(`Error at getting API data: ${response.status}`);
       }
+
       const data = await response.json();
       setAllCountries(data);
       setCountries(data);
@@ -59,7 +62,7 @@ export default function Main() {
       setShowNoResult(false);
     } else {
       const filtered = allCountries.filter((country) =>
-        country.name.common.toLowerCase().includes(searchCountry.toLowerCase())
+        country.name.common.toLowerCase().includes(searchCountry.toLowerCase()),
       );
       setCountries(filtered);
       setShowNoResult(filtered.length === 0);
@@ -76,7 +79,7 @@ export default function Main() {
       setShowNoResult(false);
     } else {
       try {
-        const response = await fetch(`${urlAPI}region/${regionValue}`);
+        const response = await fetch(`${apiUrl}region/${regionValue}`);
         if (!response.ok) {
           throw new Error(`Error at getting API data: ${response.status}`);
         }
