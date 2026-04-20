@@ -31,56 +31,63 @@ export default function Country() {
   const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    const fetchCountry = async (countryName) => {
+    const fetchBorderNames = async (borderCodes) => {
+      if (!borderCodes || borderCodes.length === 0) {
+        setBorderNames([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${apiUrl}alpha?codes=${borderCodes.join(",")}`,
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Error at getting border countries data: ${response.status}`,
+          );
+        }
+
+        const data = await response.json();
+        const names = data.map((borderCountry) => borderCountry.name.common);
+        setBorderNames(names);
+      } catch (error) {
+        console.error(error);
+        setError(error);
+      }
+    };
+
+    const fetchCountry = async () => {
       try {
         const response = await fetch(
           `${apiUrl}name/${countryName}?fullText=true`,
         );
+
         if (!response.ok) {
           navigate("*");
           throw new Error(`Error at getting country data: ${response.status}`);
         }
+
         const data = await response.json();
+
         if (data.length === 0) {
           navigate("/");
         } else {
           setCountry(data[0]);
-          fetchBorderNames(data[0].borders);
+          await fetchBorderNames(data[0].borders);
         }
       } catch (error) {
-        //console.error(error);
         setError(error);
       } finally {
         setLoading(false);
       }
     };
 
-    setLoading(true);
-    fetchCountry(countryName);
-  }, [countryName, navigate]);
-
-  const fetchBorderNames = async (borderCodes) => {
-    if (borderCodes && borderCodes.length > 0) {
-      try {
-        const response = await fetch(
-          `${apiUrl}alpha?codes=${borderCodes.join(",")}`,
-        );
-        if (!response.ok) {
-          throw new Error(
-            `Error at getting border countries data: ${response.status}`,
-          );
-        }
-        const data = await response.json();
-        const borderNames = data.map(
-          (borderCountry) => borderCountry.name.common,
-        );
-        setBorderNames(borderNames);
-      } catch (error) {
-        console.error(error);
-        setError(error);
-      }
+    if (apiUrl && countryName) {
+      setLoading(true);
+      fetchCountry();
     }
-  };
+  }, [apiUrl, countryName, navigate]);
 
   const RenderBorderCountries = () => {
     if (borderNames.length > 0) {
@@ -89,9 +96,9 @@ export default function Country() {
           {border}
         </BtnCountry>
       ));
-    } else {
-      return <Span>N/A</Span>;
     }
+
+    return <Span>N/A</Span>;
   };
 
   const {
@@ -142,7 +149,8 @@ export default function Country() {
   }
 
   if (error) {
-    return navigate("*");
+    navigate("*");
+    return null;
   }
 
   return (
@@ -152,10 +160,15 @@ export default function Country() {
           <BsArrowLeft />
           Back
         </BtnBack>
+
         <Container>
-          {flags && <Img src={flags.png} alt={name.common} />}
+          {flags && (
+            <Img src={flags.png} alt={name?.common || "country flag"} />
+          )}
+
           <ContainerData>
             <Title>{name?.common || "N/A"}</Title>
+
             <ListContainer>
               <Ul>
                 <Li>
@@ -168,12 +181,13 @@ export default function Country() {
                   Region:<P>{region || "N/A"}</P>
                 </Li>
                 <Li>
-                  Sub Region:<P> {subregion || "N/A"}</P>
+                  Sub Region:<P>{subregion || "N/A"}</P>
                 </Li>
                 <Li>
                   Capital:<P>{capital?.join(", ") || "N/A"}</P>
                 </Li>
               </Ul>
+
               <Ul>
                 <Li>
                   Top Level Domain:<P>{tld?.[0] || "N/A"}</P>
@@ -186,6 +200,7 @@ export default function Country() {
                 </Li>
               </Ul>
             </ListContainer>
+
             <ContainerBorder>
               <Li>Border Countries:</Li>
               <BtnContiner>{RenderBorderCountries()}</BtnContiner>

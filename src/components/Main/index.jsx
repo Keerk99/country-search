@@ -31,11 +31,39 @@ export default function Main() {
     }, time);
   };
 
-  const fetchCountries = async () => {
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch(
+          `${apiUrl}all?fields=name,flags,population,region,capital`,
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error at getting API data: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setAllCountries(data);
+        setCountries(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (apiUrl) {
+      fetchCountries();
+      handleLoading(800);
+    }
+  }, [apiUrl]);
+
+  const fetchCountriesData = async () => {
     try {
       const response = await fetch(
         `${apiUrl}all?fields=name,flags,population,region,capital`,
       );
+
       if (!response.ok) {
         throw new Error(`Error at getting API data: ${response.status}`);
       }
@@ -47,11 +75,6 @@ export default function Main() {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    fetchCountries();
-    handleLoading(800);
-  }, []);
 
   const handleSearch = (e) => {
     const searchCountry = e.target.value;
@@ -72,17 +95,20 @@ export default function Main() {
 
   const handleRegionChange = async (regionValue) => {
     setSelectedRegion(regionValue);
+
     if (regionValue === "All") {
-      fetchCountries();
+      await fetchCountriesData();
       handleLoading(500);
       setSearchKey("");
       setShowNoResult(false);
     } else {
       try {
         const response = await fetch(`${apiUrl}region/${regionValue}`);
+
         if (!response.ok) {
           throw new Error(`Error at getting API data: ${response.status}`);
         }
+
         const data = await response.json();
         setCountries(data);
         handleLoading(500);
@@ -100,12 +126,12 @@ export default function Main() {
     }
   };
 
-  const handleClear = () => {
+  const handleClear = async () => {
     setSearchKey("");
     setSelectedRegion("All");
     setShowNoResult(false);
     handleLoading(500);
-    fetchCountries();
+    await fetchCountriesData();
   };
 
   return (
@@ -125,11 +151,13 @@ export default function Main() {
               />
             </Search>
           </form>
+
           <FilterByRegion
             selectedRegion={selectedRegion}
             handleRegionChange={handleRegionChange}
           />
         </ContainerSearchFilter>
+
         {loading ? (
           <Ul>
             {countries.map((_, index) => (
@@ -137,9 +165,7 @@ export default function Main() {
             ))}
           </Ul>
         ) : showNoResult ? (
-          <>
-            <NotFound searchKey={searchKey} />
-          </>
+          <NotFound searchKey={searchKey} />
         ) : (
           <Ul>
             {countries.map((country, index) => (
@@ -147,6 +173,7 @@ export default function Main() {
             ))}
           </Ul>
         )}
+
         {searchKey && <BtnClear onClick={handleClear}>Clear</BtnClear>}
       </Section>
     </MainContainer>
